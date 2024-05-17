@@ -164,6 +164,14 @@ pub fn resolve(args: ClapperArgs) -> Result<(), Box<dyn Error>> {
                             return  Err(e);
                         }
                     }
+                },
+                ScaffoldSubCommand::Flutter(dir) => {
+                    match flutter_create(dir.dir_name.clone()) {
+                        Ok(_) => println!("{}", "Successfully created a flutter project!".bright_blue()),
+                        Err(e) => {
+                            return  Err(e);
+                        }
+                    }
                 }
             }
         },

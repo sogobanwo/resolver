@@ -111,6 +111,15 @@ pub fn is_nargo_installed() -> bool {
     check_output(output)
 }
 
+pub fn is_flutter_installed() -> bool {
+    let output = Command::new("flutter")
+    .arg("--version")
+    .output();
+
+    check_output(output)
+
+}
+
 pub fn get_os() -> String {
     let os_family = std::env::consts::OS;
 
@@ -314,6 +323,19 @@ pub fn create_expo_app(project_name: String) -> Result<(), Box<dyn Error>> {
     } else {
         Command::new("npx")
             .args(["create-expo-app", project_name.as_str()])
+            .spawn()?
+            .wait()?;
+
+        Ok(())
+    }
+}
+
+pub fn flutter_create(project_name: String) -> Result<(), Box<dyn Error>> {
+    if !is_flutter_installed() {
+        return  Err("You don't have flutter installed".into());
+    } else {
+        Command::new("flutter")
+            .args(["create", project_name.as_str()])
             .spawn()?
             .wait()?;
 
